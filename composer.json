@@ -1,0 +1,31 @@
+{
+  "name": "Xariable/ShopifyAPIClient",
+  "description": "PHP Library to interact with Shopify's JSON/REST API",
+  "type": "project",
+  "license": "MIT",
+  "keywords": [ "php", "shopify", "api", "rocketcode", "xariable" ],
+  "autoload": {
+    "psr-4": {
+      "Xariable\\Shopify\\": "src/",
+      "Xariable\\Shopify\\Objects\\" : "src/objects/",
+      "Xariable\\Shopify\\Traits\\" : "src/traits/",
+      "Xariable\\Shopify\\Exceptions\\" : "src/errors/"
+    }
+  },
+  "prefer-stable": true,
+  "require": {
+    "php": ">=5.4.0",
+    "guzzlehttp/guzzle": "6.2.*"
+  },
+  "authors": [
+    {
+      "name": "Rocket Code Full Stack Devs",
+      "email": "fullstack@xariable.com"
+    }
+  ],
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.1.0"
+    }
+  }
+}
