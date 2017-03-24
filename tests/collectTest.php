@@ -6,7 +6,7 @@ putenv('SHOP_API_KEY=57ce0f2a615c348e7e703f8e44f010e8');
 putenv('SHOP_API_PASSWORD=0f27e5fc5c0d9341b545e4f3b22d5d0f');
 putenv('SHOP_DOMAIN=brandon-development-store.myshopify.com');
 
-$sc = new RocketCode\Shopify\Client;
+$sc = new Xariable\Shopify\Client;
 
 $obj = $sc::Collect();
 

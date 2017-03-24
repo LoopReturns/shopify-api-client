@@ -1,12 +1,12 @@
 <?php
 
-namespace RocketCode\Shopify\Objects;
+namespace Xariable\Shopify\Objects;
 
-use \RocketCode\Shopify\Exceptions\ShopifyException;
+use \Xariable\Shopify\Exceptions\ShopifyException;
 
 class Theme extends BaseObject {
 
-    use \RocketCode\Shopify\Traits\ShopifyTransport;
+    use \Xariable\Shopify\Traits\ShopifyTransport;
 
     protected $name = "themes";
     protected $key = "theme";

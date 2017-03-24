@@ -6,17 +6,17 @@
  * Time: 1:06 PM
  */
 
-namespace RocketCode\Shopify\Objects;
+namespace Xariable\Shopify\Objects;
 
 class SmartCollection extends BaseObject {
 
-	use \RocketCode\Shopify\Traits\ShopifyTransport;
+	use \Xariable\Shopify\Traits\ShopifyTransport;
 
 	protected $name = "smart_collections";
 	protected $key = "smart_collection";
 
 	# Need to customize 'order'
 
-	
+
 
 }

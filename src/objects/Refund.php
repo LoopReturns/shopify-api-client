@@ -6,11 +6,11 @@
  * Time: 1:06 PM
  */
 
-namespace RocketCode\Shopify\Objects;
+namespace Xariable\Shopify\Objects;
 
 class Refund extends BaseObject {
 
-	use \RocketCode\Shopify\Traits\ShopifyTransport;
+	use \Xariable\Shopify\Traits\ShopifyTransport;
 
 	protected $name = "refunds";
 	protected $key = "refund";
@@ -18,5 +18,5 @@ class Refund extends BaseObject {
 	protected $omit = ['update'];
 
 	## Need to customize 'calculate'
-	
+
 }

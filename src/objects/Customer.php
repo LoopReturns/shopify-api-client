@@ -6,11 +6,11 @@
  * Time: 1:06 PM
  */
 
-namespace RocketCode\Shopify\Objects;
+namespace Xariable\Shopify\Objects;
 
 class Customer extends BaseObject {
 
-	use \RocketCode\Shopify\Traits\ShopifyTransport;
+	use \Xariable\Shopify\Traits\ShopifyTransport;
 
 	protected $name = "customers";
 	protected $key = "customer";

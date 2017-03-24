@@ -6,12 +6,12 @@
  * Time: 4:11 PM
  */
 
-namespace RocketCode\Shopify\Traits;
+namespace Xariable\Shopify\Traits;
 
 use Exception;
 use GuzzleHttp;
 use GuzzleHttp\Exception\ClientException;
-use RocketCode\Shopify\Exceptions\ShopifyException;
+use Xariable\Shopify\Exceptions\ShopifyException;
 
 trait ShopifyTransport {
 

@@ -6,7 +6,7 @@
  * Time: 10:16 PM
  */
 
-namespace RocketCode\Shopify\Objects;
+namespace Xariable\Shopify\Objects;
 
 
 class BaseProvider {

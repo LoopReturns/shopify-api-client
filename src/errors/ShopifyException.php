@@ -6,7 +6,7 @@
  * Time: 4:25 PM
  */
 
-namespace RocketCode\Shopify\Exceptions;
+namespace Xariable\Shopify\Exceptions;
 
 
 class ShopifyException extends \Exception {

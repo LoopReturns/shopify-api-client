@@ -6,12 +6,12 @@
  * Time: 1:06 PM
  */
 
-namespace RocketCode\Shopify\Objects;
-use \RocketCode\Shopify\Exceptions\ShopifyException;
+namespace Xariable\Shopify\Objects;
+use \Xariable\Shopify\Exceptions\ShopifyException;
 
 class ProductVariant extends BaseObject {
 
-	use \RocketCode\Shopify\Traits\ShopifyTransport;
+	use \Xariable\Shopify\Traits\ShopifyTransport;
 
 	protected $name = "variants";
 	protected $key = "variant";

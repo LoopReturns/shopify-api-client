@@ -1,7 +1,7 @@
 <?php
 	require_once ( 'vendor/autoload.php');
 
-	$sc = new \RocketCode\Shopify\Client;
+	$sc = new \Xariable\Shopify\Client;
 
 	$cHandle = $sc::Customer();
 	$cHandle->setApiKey('58a81ddf6c0242f98e088b717fda5c68');

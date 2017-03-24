@@ -7,7 +7,7 @@
  * Time: 12:31 PM
  */
 
-namespace RocketCode\Shopify;
+namespace Xariable\Shopify;
 
 class Client {
 
@@ -32,7 +32,7 @@ class Client {
 	public static function __callstatic ( $name , $args=null ) {
 		$objects = self::__setDefinedObjects();
 		if( in_array( $name , $objects ) ) {
-			$string = "\RocketCode\Shopify\Objects\\" . $name;
+			$string = "\Xariable\Shopify\Objects\\" . $name;
 			//print "$string\n";
 			return new $string( $args );
 		}

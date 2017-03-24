@@ -6,12 +6,12 @@
  * Time: 1:06 PM
  */
 
-namespace RocketCode\Shopify\Objects;
+namespace Xariable\Shopify\Objects;
 
 class Discount extends BaseObject {
 
-	use \RocketCode\Shopify\Traits\ShopifyTransport;
-	
+	use \Xariable\Shopify\Traits\ShopifyTransport;
+
 	## Need to customize enable/disable.
 
 	protected $name = "discounts";
