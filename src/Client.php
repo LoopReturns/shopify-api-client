@@ -32,8 +32,7 @@ class Client {
 	public static function __callstatic ( $name , $args=null ) {
 		$objects = self::__setDefinedObjects();
 		if( in_array( $name , $objects ) ) {
-			$string = "\Xariable\Shopify\Objects\\" . $name;
-			//print "$string\n";
+			$string = "\\Xariable\Shopify\Objects\\" . $name;
 			return new $string( $args );
 		}
 	}
