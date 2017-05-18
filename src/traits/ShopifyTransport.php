@@ -39,8 +39,10 @@ trait ShopifyTransport {
 		}
 		catch ( ClientException $e ) {
 			// Throw new ShopifyException( "Shopify-Guzzle (xxx): " . $e->getMessage(), $e->getCode(), $e );
-			$string = '{"errors":' . $e->getCode() . '}';
-			return json_encode(strval($string));
+			return json_encode([
+				'errors' => $e->getCode(),
+				'message' => $e->getMessage()
+			]);
 		}
 		catch ( Exception $e ) {
 			Throw new ShopifyException( "Shopify-Other: " . $e->getMessage(), $e->getCode(), $e );
