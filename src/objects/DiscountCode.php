@@ -3,11 +3,11 @@
  * User: bschmidt
  * Date: 5/18/17
  */
-namespace RocketCode\Shopify\Objects;
+namespace Xariable\Shopify\Objects;
 
 class DiscountCode extends BaseObject {
 
-	use \RocketCode\Shopify\Traits\ShopifyTransport;
+	use \Xariable\Shopify\Traits\ShopifyTransport;
 
 	## Need to customize enable/disable.
 
