@@ -70,7 +70,10 @@ class BaseObject extends BaseProvider {
 		if( $result and property_exists( $result, $this->key) )
 			return json_encode( $result->{$this->key} );
 
-		return $result;
+		if ( is_string($result) )
+			return $result;
+
+		return json_encode($result);
 	}
 
 	# Pass in JSON
@@ -98,7 +101,10 @@ class BaseObject extends BaseProvider {
 		if( $result and property_exists( $result, $this->key) )
 			return json_encode( $result->{$this->key} );
 
-		return $result;
+		if ( is_string($result) )
+			return $result;
+
+		return json_encode($result);
 	}
 
 	####---- Functions below here pass in an array.
@@ -153,7 +159,10 @@ class BaseObject extends BaseProvider {
 		if( $result and property_exists( $result, $this->key) )
 			return json_encode( $result->{$this->key} );
 
-		return $result;
+		if ( is_string($result) )
+			return $result;
+
+		return json_encode($result);
 	}
 
 	# Pass in Array
@@ -189,7 +198,10 @@ class BaseObject extends BaseProvider {
 		if( $result and property_exists( $result, $this->name) )
 			return json_encode( $result->{$this->name} );
 
-		return $result;
+		if ( is_string($result) )
+			return $result;
+
+		return json_encode($result);
 	}
 
 	# Pass in Array
@@ -220,6 +232,9 @@ class BaseObject extends BaseProvider {
 		if( $result and property_exists( $result, 'count') )
 			return json_encode( $result->count );
 
-		return $result;
+		if ( is_string($result) )
+			return $result;
+
+		return json_encode($result);
 	}
 }
