@@ -16,7 +16,7 @@ class ProductVariant extends BaseObject {
 	protected $name = "variants";
 	protected $key = "variant";
 
-	protected $omit = [ 'update', 'create' ];
+	protected $omit = [ 'create' ];
 	protected $parent = "products";
 	protected $hasParent = [ 'all', 'count', 'create', 'delete' ];
 
