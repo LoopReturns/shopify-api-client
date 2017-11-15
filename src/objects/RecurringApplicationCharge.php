@@ -25,11 +25,11 @@ class RecurringApplicationCharge extends BaseObject {
 		$res    = $this->execute( $url, "POST", $headers, $data );
 		$result = json_decode( $res );
 
-		if( $result and property_exists( $result, 'recurring_application_charges') ) {
-			if( count( $result->recurring_application_charges ) == 0 )
-				return "";
+		if( $result and property_exists( $result, 'recurring_application_charge') ) {
+			if( count( $result->recurring_application_charge ) == 0 )
+				return json_encode([]);
 
-			return json_encode( $result->{'recurring_application_charges'} );
+			return json_encode( $result->{'recurring_application_charge'} );
 		}
 
 	}
