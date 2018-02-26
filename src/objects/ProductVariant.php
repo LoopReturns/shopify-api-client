@@ -16,7 +16,7 @@ class ProductVariant extends BaseObject {
 	protected $name = "variants";
 	protected $key = "variant";
 
-	protected $omit = [ 'create' ];
+	// protected $omit = [ 'create' ];
 	protected $parent = "products";
 	protected $hasParent = [ 'all', 'count', 'create', 'delete' ];
 
@@ -30,6 +30,24 @@ class ProductVariant extends BaseObject {
 		unset( $internalArgs['product_id'] );
 
 		return $this->all( $internalArgs );
+	}
+
+	public function secretIsh( $p, $args ) {
+
+		$url = $this->getShopBaseUrl() ."/admin/products/". $p ."/variants.json";
+		$headers = $this->getRequestHeaders();
+
+		$data = '{ "' . $this->key . '":' . $args . '}';
+		$result = $this->execute( $url, "POST", $headers, $data );
+		$result = json_decode( $result );
+
+		if( $result and property_exists( $result, $this->key) )
+			return json_encode( $result->{$this->key} );
+
+		if ( is_string($result) )
+			return $result;
+
+		return json_encode($result);
 	}
 
 }
