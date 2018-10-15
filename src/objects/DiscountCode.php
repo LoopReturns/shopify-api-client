@@ -14,4 +14,19 @@ class DiscountCode extends BaseObject {
 	protected $name = "discount_codes";
 	protected $key = "discount_code";
 	protected $parent = "price_rules";
+
+	public function lookup($code) {
+		if( !isset($code) ) {
+			throw new ShopifyException( 'Invalid args: Provide a discount code.' );
+		}
+
+		$url = $this->getShopBaseUrl() ."/admin/discount_codes/lookup.json?code=". $code;
+		$headers = $this->getRequestHeaders();
+
+		// returns a PHP object with body & headers
+		$result = $this->executeWithHeaders($url, "GET", $headers);
+
+		return $result;
+	}
+
 }

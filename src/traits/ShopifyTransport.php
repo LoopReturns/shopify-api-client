@@ -19,7 +19,7 @@ trait ShopifyTransport {
 	private $shopifyTransportClient;
 	private $httpClient;
 
-	public function execute ( $url , $method , $headers, $data=null , $wantObj=false ) {
+	public function execute($url , $method , $headers, $data=null , $wantObj=false) {
 		$this->shopifyTransportResult = null;
 		$this->httpClient = new GuzzleHttp\Client();
 
@@ -56,6 +56,48 @@ trait ShopifyTransport {
 		}
 
 		return false;
-
 	}
+
+	public function executeWithHeaders($url, $method, $headers, $data = null) {
+		$this->shopifyTransportResult = null;
+		$this->httpClient = new GuzzleHttp\Client();
+
+		try {
+			$attrs = array(
+				'headers'          => $headers,
+				'allow_redirects'  => false
+			);
+
+			if( !is_null($data) )
+				$attrs['body'] = $data;
+
+			$this->shopifyTransportResult = $this->httpClient->request(
+				strtoupper($method),
+				$url,
+				$attrs
+			);
+		}
+		catch ( ClientException $e ) {
+			return json_encode([
+				'errors'  => $e->getCode(),
+				'message' => $e->getMessage()
+			]);
+		}
+		catch ( Exception $e ) {
+			throw new ShopifyException( "Shopify-Other: ". $e->getMessage(), $e->getCode(), $e );
+		}
+
+		if( !is_null($this->shopifyTransportResult) ) {
+			$response = [
+				"code"     => $this->shopifyTransportResult->getStatusCode(),
+				"body"     => $this->shopifyTransportResult->getBody(),
+				"headers"  => $this->shopifyTransportResult->getHeaders()
+			];
+
+			return json_encode($response);
+		}
+
+		return false;
+	}
+
 }
