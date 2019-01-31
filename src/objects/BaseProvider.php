@@ -47,7 +47,8 @@ class BaseProvider {
 		$this->headers = array(
 			'Content-Type' => 'application/json' ,
 			'Accept' => '*/*',
-			'X-Shopify-Access-Token' => $this->accessToken
+			'X-Shopify-Access-Token' => $this->accessToken,
+			'X-Shopify-Api-Features' => 'include-presentment-prices'
 		);
 	}
 
