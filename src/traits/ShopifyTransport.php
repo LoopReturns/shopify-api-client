@@ -19,7 +19,7 @@ trait ShopifyTransport {
 	private $shopifyTransportClient;
 	private $httpClient;
 
-	public function execute($url , $method , $headers, $data=null , $wantObj=false) {
+	public function execute($url, $method, $headers, $data = null, $want_obj = false) {
 		$this->shopifyTransportResult = null;
 		$this->httpClient = new GuzzleHttp\Client();
 
@@ -38,21 +38,25 @@ trait ShopifyTransport {
 			);
 		}
 		catch ( ClientException $e ) {
-			// Throw new ShopifyException( "Shopify-Guzzle (xxx): " . $e->getMessage(), $e->getCode(), $e );
 			return json_encode([
-				'errors' => $e->getCode(),
+				'errors'  => $e->getCode(),
 				'message' => $e->getMessage()
 			]);
 		}
 		catch ( Exception $e ) {
-			Throw new ShopifyException( "Shopify-Other: " . $e->getMessage(), $e->getCode(), $e );
+			return json_encode([
+				'errors'  => $e->getCode(),
+				'message' => $e->getMessage()
+			]);
 		}
 
-		if( !is_null( $this->shopifyTransportResult ) ) {
-			$string = $this->shopifyTransportResult->getBody();
-			return ( $wantObj ) ?
-				json_decode( strval($string) )
-				: strval($string);
+		if ( !is_null( $this->shopifyTransportResult ) ) {
+			$string = strval($this->shopifyTransportResult->getBody());
+
+			if ( $want_obj )
+				return json_decode($string);
+
+			return $string;
 		}
 
 		return false;
@@ -84,7 +88,10 @@ trait ShopifyTransport {
 			]);
 		}
 		catch ( Exception $e ) {
-			throw new ShopifyException( "Shopify-Other: ". $e->getMessage(), $e->getCode(), $e );
+			return json_encode([
+				'errors'  => $e->getCode(),
+				'message' => $e->getMessage()
+			]);
 		}
 
 		if( !is_null($this->shopifyTransportResult) ) {
