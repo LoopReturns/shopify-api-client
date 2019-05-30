@@ -20,7 +20,7 @@ class DiscountCode extends BaseObject {
 			throw new ShopifyException( 'Invalid args: Provide a discount code.' );
 		}
 
-		$url = $this->getShopBaseUrl() ."/admin/discount_codes/lookup.json?code=". $code;
+		$url = $this->getShopBaseUrl() ."/admin/discount_codes/lookup.json?code=". urlencode($code);
 		$headers = $this->getRequestHeaders();
 
 		// returns a PHP object with body & headers
