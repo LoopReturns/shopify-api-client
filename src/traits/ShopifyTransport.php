@@ -12,7 +12,6 @@ use Exception;
 use GuzzleHttp;
 use GuzzleHttp\Exception\ClientException;
 use Xariable\Shopify\Exceptions\ShopifyException;
-use App\Classes\Counter;
 
 trait ShopifyTransport {
 
@@ -32,7 +31,9 @@ trait ShopifyTransport {
 			if( !is_null($data) )
 				$attrs['body'] = $data;
 
-			Counter::inc('shopify', $this->name ?? 'default');
+			if(class_exists('\App\Classes\Counter')) {
+				\App\Classes\Counter::inc('shopify', $this->name ?? 'default');
+			}
 
 			$this->shopifyTransportResult = $this->httpClient->request(
 				strtoupper($method),
@@ -78,7 +79,9 @@ trait ShopifyTransport {
 			if( !is_null($data) )
 				$attrs['body'] = $data;
 
-			Counter::inc('shopify', $this->name ?? 'default');
+			if(class_exists('\App\Classes\Counter')) {
+				\App\Classes\Counter::inc('shopify', $this->name ?? 'default');
+			}
 
 			$this->shopifyTransportResult = $this->httpClient->request(
 				strtoupper($method),
