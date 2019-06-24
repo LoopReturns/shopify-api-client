@@ -31,6 +31,10 @@ trait ShopifyTransport {
 			if( !is_null($data) )
 				$attrs['body'] = $data;
 
+			if(class_exists('\App\Classes\Counter')) {
+				\App\Classes\Counter::inc('shopify', $this->name ?? 'default');
+			}
+
 			$this->shopifyTransportResult = $this->httpClient->request(
 				strtoupper($method),
 				$url,
@@ -74,6 +78,10 @@ trait ShopifyTransport {
 
 			if( !is_null($data) )
 				$attrs['body'] = $data;
+
+			if(class_exists('\App\Classes\Counter')) {
+				\App\Classes\Counter::inc('shopify', $this->name ?? 'default');
+			}
 
 			$this->shopifyTransportResult = $this->httpClient->request(
 				strtoupper($method),
