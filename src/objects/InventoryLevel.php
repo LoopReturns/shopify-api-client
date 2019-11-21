@@ -2,6 +2,8 @@
 
 namespace Xariable\Shopify\Objects;
 
+use Xariable\Shopify\Exceptions\ShopifyException;
+
 class InventoryLevel extends BaseObject {
 
 	use \Xariable\Shopify\Traits\ShopifyTransport;
@@ -33,7 +35,7 @@ class InventoryLevel extends BaseObject {
 		$headers = $this->getRequestHeaders();
 
 		// returns a PHP object with body & headers
-		$result = $this->execute($url, 'POST', $headers, $data);
+		$result = $this->execute($url, 'POST', $headers, json_encode($data));
 
 		return $result;
 	}
