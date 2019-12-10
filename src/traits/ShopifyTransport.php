@@ -58,15 +58,8 @@ trait ShopifyTransport {
 			$string = strval($this->shopifyTransportResult->getBody());
 
 			// Self rollback to avoid Shopify throttling
-            $headers  = $this->shopifyTransportResult->getHeaders();
-            $this->shouldLimit($headers);
-
-			try {
-				$rh = $this->shopifyTransportResult->getHeaders();
-				error_log(date("Y-m-d H:i:s") . ' - ' . ($rh['X-Shopify-Shop-Api-Call-Limit'][0] ?? 'no limit header') . ' ' . strtoupper($method) . " " . $url . "\n", '3', '/home/forge/loop.pink/storage/logs/shopify-' . date("Y-m-d") . '.log');
-			} catch(Exception $e) {
-				error_log(date("Y-m-d H:i:s") . ' - Error: ' . $e->getMessage(). "\n", '3', 'storage/logs/shopify-' . date("Y-m-d") . '.log');
-			}
+			$result_headers  = $this->shopifyTransportResult->getHeaders();
+            $this->shouldLimit($result_headers, $method, $url);
 
 			if ( $want_obj )
 				return json_decode($string);
@@ -121,15 +114,8 @@ trait ShopifyTransport {
 			];
 
 			// Self rollback to avoid Shopify throttling
-            $headers  = $this->shopifyTransportResult->getHeaders();
-            $this->shouldLimit($headers);
-
-			try {
-				$rh = $this->shopifyTransportResult->getHeaders();
-				error_log(date("Y-m-d H:i:s") . ' - ' . ($rh['X-Shopify-Shop-Api-Call-Limit'][0] ?? 'no limit header') . ' ' . strtoupper($method) . " " . $url . "\n", '3', '/home/forge/loop.pink/storage/logs/shopify-' . date("Y-m-d") . '.log');
-			} catch(Exception $e) {
-				error_log(date("Y-m-d H:i:s") . ' - Error: ' . $e->getMessage(). "\n", '3', 'storage/logs/shopify-' . date("Y-m-d") . '.log');
-			}
+            $result_headers  = $this->shopifyTransportResult->getHeaders();
+            $this->shouldLimit($result_headers, $method, $url);
 
 			return json_encode($response);
 		}
@@ -137,9 +123,18 @@ trait ShopifyTransport {
 		return false;
 	}
 
-	private function shouldLimit($headers) {
+	private function shouldLimit($headers, $method, $url) {
     	if ( isset($headers['X-Shopify-Shop-Api-Call-Limit'][0]) ) {
-        	$limits = explode('/', $headers['X-Shopify-Shop-Api-Call-Limit'][0]);
+
+    		$site = getenv('APP_DOMAIN');
+
+			try {
+				error_log(date("Y-m-d H:i:s") . ' - ' . ($headers['X-Shopify-Shop-Api-Call-Limit'][0] ?? 'no limit header') . ' ' . strtoupper($method) . " " . $url . "\n", '3', '/home/forge/'.$site.'/storage/logs/shopify-' . date("Y-m-d") . '.log');
+			} catch(Exception $e) {
+				error_log(date("Y-m-d H:i:s") . ' - Error: ' . $e->getMessage(). "\n", '3', '/home/forge/'.$site.'/storage/logs/shopify-' . date("Y-m-d") . '.log');
+			}
+
+			$limits = explode('/', $headers['X-Shopify-Shop-Api-Call-Limit'][0]);
 
             if ( gettype($limits) == 'array' ) {
                 \Log::debug('limit ' . $headers['X-Shopify-Shop-Api-Call-Limit'][0]);
