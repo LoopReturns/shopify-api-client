@@ -42,10 +42,13 @@ trait ShopifyTransport {
 			);
 		}
 		catch ( ClientException $e ) {
+			// Self rollback to avoid Shopify throttling
 			if ( !is_null( $this->shopifyTransportResult ) ) {
-				// Self rollback to avoid Shopify throttling
 				$result_headers  = $this->shopifyTransportResult->getHeaders();
 				$this->shouldLimit($result_headers, $method, $url);
+			}
+			else if ( $e->getCode() == 429 ) {
+				usleep(2000000);
 			}
 			return json_encode([
 				'errors'  => $e->getCode(),
@@ -53,10 +56,13 @@ trait ShopifyTransport {
 			]);
 		}
 		catch ( Exception $e ) {
+			// Self rollback to avoid Shopify throttling
 			if ( !is_null( $this->shopifyTransportResult ) ) {
-				// Self rollback to avoid Shopify throttling
 				$result_headers  = $this->shopifyTransportResult->getHeaders();
 				$this->shouldLimit($result_headers, $method, $url);
+			}
+			else if ( $e->getCode() == 429 ) {
+				usleep(2000000);
 			}
 			return json_encode([
 				'errors'  => $e->getCode(),
@@ -104,10 +110,13 @@ trait ShopifyTransport {
 			);
 		}
 		catch ( ClientException $e ) {
+			// Self rollback to avoid Shopify throttling
 			if ( !is_null( $this->shopifyTransportResult ) ) {
-				// Self rollback to avoid Shopify throttling
 				$result_headers  = $this->shopifyTransportResult->getHeaders();
 				$this->shouldLimit($result_headers, $method, $url);
+			}
+			else if ( $e->getCode() == 429 ) {
+				usleep(2000000);
 			}
 			return json_encode([
 				'errors'  => $e->getCode(),
@@ -115,10 +124,13 @@ trait ShopifyTransport {
 			]);
 		}
 		catch ( Exception $e ) {
+			// Self rollback to avoid Shopify throttling
 			if ( !is_null( $this->shopifyTransportResult ) ) {
-				// Self rollback to avoid Shopify throttling
 				$result_headers  = $this->shopifyTransportResult->getHeaders();
 				$this->shouldLimit($result_headers, $method, $url);
+			}
+			else if ( $e->getCode() == 429 ) {
+				usleep(2000000);
 			}
 			return json_encode([
 				'errors'  => $e->getCode(),
@@ -170,7 +182,7 @@ trait ShopifyTransport {
                 \Log::debug('Rate '. $rate);
                 if ($rate > 75) {
                     if ( $rate > 95 ) { // 38/40
-                        // wait for 1 seconds
+                        // wait for 1 1/3 seconds
                         usleep(1333333);
                     }
                     else if  ( $rate > 85 ) { // 35/40
