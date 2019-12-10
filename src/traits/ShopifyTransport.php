@@ -57,6 +57,10 @@ trait ShopifyTransport {
 		if ( !is_null( $this->shopifyTransportResult ) ) {
 			$string = strval($this->shopifyTransportResult->getBody());
 
+			// Self rollback to avoid Shopify throttling
+            $headers  = $this->shopifyTransportResult->getHeaders();
+            $this->shouldLimit($headers);
+
 			if ( $want_obj )
 				return json_decode($string);
 
@@ -109,10 +113,46 @@ trait ShopifyTransport {
 				"headers"  => $this->shopifyTransportResult->getHeaders()
 			];
 
+			// Self rollback to avoid Shopify throttling
+            $headers  = $this->shopifyTransportResult->getHeaders();
+            $this->shouldLimit($headers);
+
 			return json_encode($response);
 		}
 
 		return false;
 	}
+
+	private function shouldLimit($headers) {
+    	if ( isset($headers['X-Shopify-Shop-Api-Call-Limit'][0]) ) {
+        	$limits = explode('/', $headers['X-Shopify-Shop-Api-Call-Limit'][0]);
+
+            if ( gettype($limits) == 'array' ) {
+                \Log::debug('limit ' . $headers['X-Shopify-Shop-Api-Call-Limit'][0]);
+                \Log::debug('limit type ' . gettype($headers['X-Shopify-Shop-Api-Call-Limit']));
+                \Log::debug('limit split ' . json_encode($limits));
+
+                //40/20 = 2, 80 / 20 = 4, 120 / 20 = 6, 160 / 20 = 8
+                $rate = ($limits[0] / $limits[1]) * 100;
+                \Log::debug('Rate '. $rate);
+                if ($rate > 75) {
+                    if ( $rate > 95 ) { // 38/40
+                        // wait for 1 seconds
+                        usleep(1333333);
+                    }
+                    else if  ( $rate > 85 ) { // 35/40
+                        // wait for 1/2 seconds
+                        usleep(500000);
+                    }
+                    else if  ( $rate > 70 ) { // 30/40
+                        // wait for 1/3 seconds
+                        usleep(333333);
+                    }
+
+                }
+            }
+        }
+        return true;
+     }
 
 }
