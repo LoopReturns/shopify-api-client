@@ -42,12 +42,22 @@ trait ShopifyTransport {
 			);
 		}
 		catch ( ClientException $e ) {
+			if ( !is_null( $this->shopifyTransportResult ) ) {
+				// Self rollback to avoid Shopify throttling
+				$result_headers  = $this->shopifyTransportResult->getHeaders();
+				$this->shouldLimit($result_headers, $method, $url);
+			}
 			return json_encode([
 				'errors'  => $e->getCode(),
 				'message' => $e->getMessage()
 			]);
 		}
 		catch ( Exception $e ) {
+			if ( !is_null( $this->shopifyTransportResult ) ) {
+				// Self rollback to avoid Shopify throttling
+				$result_headers  = $this->shopifyTransportResult->getHeaders();
+				$this->shouldLimit($result_headers, $method, $url);
+			}
 			return json_encode([
 				'errors'  => $e->getCode(),
 				'message' => $e->getMessage()
@@ -94,12 +104,22 @@ trait ShopifyTransport {
 			);
 		}
 		catch ( ClientException $e ) {
+			if ( !is_null( $this->shopifyTransportResult ) ) {
+				// Self rollback to avoid Shopify throttling
+				$result_headers  = $this->shopifyTransportResult->getHeaders();
+				$this->shouldLimit($result_headers, $method, $url);
+			}
 			return json_encode([
 				'errors'  => $e->getCode(),
 				'message' => $e->getMessage()
 			]);
 		}
 		catch ( Exception $e ) {
+			if ( !is_null( $this->shopifyTransportResult ) ) {
+				// Self rollback to avoid Shopify throttling
+				$result_headers  = $this->shopifyTransportResult->getHeaders();
+				$this->shouldLimit($result_headers, $method, $url);
+			}
 			return json_encode([
 				'errors'  => $e->getCode(),
 				'message' => $e->getMessage()
