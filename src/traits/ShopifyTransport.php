@@ -132,7 +132,11 @@ trait ShopifyTransport {
                 \Log::debug('limit type ' . gettype($headers['X-Shopify-Shop-Api-Call-Limit']));
                 \Log::debug('limit split ' . json_encode($limits));
 
-                //40/20 = 2, 80 / 20 = 4, 120 / 20 = 6, 160 / 20 = 8
+				//40/20 = 2, 80 / 20 = 4, 120 / 20 = 6, 160 / 20 = 8
+				if ( $limits[1] == 0 ) {
+					return true;
+				}
+
                 $rate = ($limits[0] / $limits[1]) * 100;
                 \Log::debug('Rate '. $rate);
                 if ($rate > 75) {
