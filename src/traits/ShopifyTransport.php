@@ -57,6 +57,13 @@ trait ShopifyTransport {
 		if ( !is_null( $this->shopifyTransportResult ) ) {
 			$string = strval($this->shopifyTransportResult->getBody());
 
+			try {
+				$rh = $this->shopifyTransportResult->getHeaders();
+				error_log(date("Y-m-d H:i:s") . ' - ' . ($rh['X-Shopify-Shop-Api-Call-Limit'][0] ?? 'no limit header') . ' ' . strtoupper($method) . " " . $url . "\n", '3', '/home/forge/loop.pink/storage/logs/shopify-' . date("Y-m-d") . '.log');
+			} catch(Exception $e) {
+				error_log(date("Y-m-d H:i:s") . ' - Error: ' . $e->getMessage(). "\n", '3', 'storage/logs/shopify-' . date("Y-m-d") . '.log');
+			}
+
 			if ( $want_obj )
 				return json_decode($string);
 
@@ -108,6 +115,13 @@ trait ShopifyTransport {
 				"body"     => $this->shopifyTransportResult->getBody(),
 				"headers"  => $this->shopifyTransportResult->getHeaders()
 			];
+
+			try {
+				$rh = $this->shopifyTransportResult->getHeaders();
+				error_log(date("Y-m-d H:i:s") . ' - ' . ($rh['X-Shopify-Shop-Api-Call-Limit'][0] ?? 'no limit header') . ' ' . strtoupper($method) . " " . $url . "\n", '3', '/home/forge/loop.pink/storage/logs/shopify-' . date("Y-m-d") . '.log');
+			} catch(Exception $e) {
+				error_log(date("Y-m-d H:i:s") . ' - Error: ' . $e->getMessage(). "\n", '3', 'storage/logs/shopify-' . date("Y-m-d") . '.log');
+			}
 
 			return json_encode($response);
 		}
