@@ -169,17 +169,12 @@ trait ShopifyTransport {
 			$limits = explode('/', $headers['X-Shopify-Shop-Api-Call-Limit'][0]);
 
             if ( gettype($limits) == 'array' ) {
-                \Log::debug('limit ' . $headers['X-Shopify-Shop-Api-Call-Limit'][0]);
-                \Log::debug('limit type ' . gettype($headers['X-Shopify-Shop-Api-Call-Limit']));
-                \Log::debug('limit split ' . json_encode($limits));
-
 				//40/20 = 2, 80 / 20 = 4, 120 / 20 = 6, 160 / 20 = 8
 				if ( $limits[1] == 0 ) {
 					return true;
 				}
 
                 $rate = ($limits[0] / $limits[1]) * 100;
-                \Log::debug('Rate '. $rate);
                 if ($rate > 75) {
                     if ( $rate > 95 ) { // 38/40
                         // wait for 1 1/3 seconds
@@ -189,7 +184,7 @@ trait ShopifyTransport {
                         // wait for 1/2 seconds
                         usleep(500000);
                     }
-                    else if  ( $rate > 70 ) { // 30/40
+                    else  ( $rate > 70 ) { // 30/40
                         // wait for 1/3 seconds
                         usleep(333333);
                     }
