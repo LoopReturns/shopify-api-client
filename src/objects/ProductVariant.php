@@ -34,7 +34,7 @@ class ProductVariant extends BaseObject {
 
 	public function secretIsh( $p, $args ) {
 
-		$url = $this->getShopBaseUrl() ."/admin/products/". $p ."/variants.json";
+		$url = $this->getShopBaseUrl() ."products/". $p ."/variants.json";
 		$headers = $this->getRequestHeaders();
 
 		$data = '{ "' . $this->key . '":' . $args . '}';

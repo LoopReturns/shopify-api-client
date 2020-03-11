@@ -16,7 +16,7 @@ class RecurringApplicationCharge extends BaseObject {
 	*/
 	public function activate( $charge ) {
 
-		$url = $this->getShopBaseUrl() ."/admin/{$this->name}/". $charge->id ."/activate.json";
+		$url = $this->getShopBaseUrl() ."{$this->name}/". $charge->id ."/activate.json";
 
 		$headers        = $this->getRequestHeaders();
 		$json           = json_encode($charge);

@@ -23,7 +23,7 @@ class AccessScope extends BaseObject {
 		if ( in_array( __FUNCTION__, $this->omit) )
 			return null;
 
-		$url      = $this->getShopBaseUrl() . "/admin/oauth/access_scopes.json";
+		$url      = $this->getShopBaseUrl() . "oauth/access_scopes.json";
 		$headers  = $this->getRequestHeaders();
 
 		$result = $this->execute( $url, "GET" , $headers);
