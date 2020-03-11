@@ -163,6 +163,66 @@ trait ShopifyTransport {
 		return false;
 	}
 
+	/**
+	 * execute
+	 *
+	 * Execute a query against a shop's GraphQL endpoint
+	 *
+	 * @param string - GraphQL query
+	 * @param boolean - object requested?
+	 *
+	 * @return string (JSON) or object
+	 */
+	private function executeGQL($query, $headers, $want_obj = false) {
+
+		$this->shopifyTransportResult = null;
+		$this->httpClient = new GuzzleHttp\Client();
+
+		// define request payload
+		$request_data = [
+			'headers' => $headers,
+			'body' => json_encode([
+				'query' => $query
+			])
+		];
+
+		// execute query in Shopify
+		try {
+			$this->shopifyTransportResult = $this->httpClient->request(
+				'POST',
+				$this->getShopGraphQLUrl(),
+				$request_data
+			);
+		}
+		catch ( ClientException $e ) {
+			// Throw new ShopifyException( "Shopify-Guzzle (xxx): " . $e->getMessage(), $e->getCode(), $e );
+			Log::error("GraphQL: error executing query..");
+
+			return json_encode([
+				'errors'   => $e->getCode(),
+				'message'  => $e->getMessage()
+			]);
+		}
+		catch ( Exception $e ) {
+			// Throw new ShopifyException( "Shopify-Other: " . $e->getMessage(), $e->getCode(), $e );
+			Log::error("GraphQL: error executing query..");
+
+			return json_encode([
+				'errors'   => $e->getCode(),
+				'message'  => $e->getMessage()
+			]);
+		}
+
+		// determine return value
+		if ( !is_null($this->shopifyTransportResult) ) {
+			$string = $this->shopifyTransportResult->getBody();
+			return ( $want_obj ) ? json_decode(strval($string)) : strval($string);
+		}
+
+		return false;
+	}
+
+
 	public function extractPageInfo($l) {
 		$this->previous = '';
 		$this->next = '';

@@ -84,6 +84,10 @@ class BaseProvider {
 		return $this->shopBaseUrl . '/admin/api/' . $this->shopify_api_version . '/';
 	}
 
+	public function getShopGraphQLUrl() {
+		return $this->shopBaseUrl . '/admin/api/' . $this->shopify_api_version . '/graphql.json';
+	}
+
 	public function getRequestHeaders() {
 		return $this->headers;
 	}

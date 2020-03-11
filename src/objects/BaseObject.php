@@ -20,10 +20,11 @@ class BaseObject extends BaseProvider {
 	protected $omit = [];
 	protected $parent;
 	protected $hasParent = [];
-	protected $next;
-	protected $previous;
-	protected $limit = 250;
-	protected $page = 1;
+
+	public $next;
+	public $previous;
+	public $limit = 250;
+	public $page = 1;
 
 	private function checkParent ( $f, $args ) {
 		$prefix = "";
