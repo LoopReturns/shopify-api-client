@@ -15,6 +15,8 @@ class BaseProvider {
 	private $accessToken, $shopDomain;
 	private $headers;
 
+	private $shopify_api_version = '2020-01';
+
 	public function __construct($args) {
 
 		if (isset($args[0]['domain']) && isset($args[0]['access_token'])) {
@@ -79,7 +81,11 @@ class BaseProvider {
 	}
 
 	public function getShopBaseUrl() {
-		return $this->shopBaseUrl;
+		return $this->shopBaseUrl . '/admin/api/' . $this->shopify_api_version . '/';
+	}
+
+	public function getShopGraphQLUrl() {
+		return $this->shopBaseUrl . '/admin/api/' . $this->shopify_api_version . '/graphql.json';
 	}
 
 	public function getRequestHeaders() {

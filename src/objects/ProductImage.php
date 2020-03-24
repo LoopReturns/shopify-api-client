@@ -19,14 +19,14 @@ class ProductImage extends BaseObject {
 	protected $omit = [];
 
 	/*
-	// GET /admin/products/#{id}/images.json
+	// GET products/#{id}/images.json
 	// Receive a list of all Product Images
 	public function get($args) {
 		if( !array_key_exists( 'product_id', $args ) ) {
 			throw new ShopifyException( 'Invalid args: provide a product id' );
 		}
 
-		$url = $this->getShopBaseUrl() . "/admin/products/{$args['product_id']}/images.json";
+		$url = $this->getShopBaseUrl() . "products/{$args['product_id']}/images.json";
 
 		if( array_key_exists( 'fields', $args ) )
 			$url .= "?fields=" . implode( ',', $args['fields'] );
@@ -42,14 +42,14 @@ class ProductImage extends BaseObject {
 	}
 
 
-	// GET /admin/products/#{id}/images/count.json
+	// GET products/#{id}/images/count.json
 	// Receive a count of all Product Images
 	public function count( $args=array() ) {
 		if( !array_key_exists( 'product_id', $args ) ) {
 			throw new ShopifyException( 'Invalid args: provide a product id' );
 		}
 
-		$url = $this->getShopBaseUrl() . "/admin/products/{$args['product_id']}/images/count.json";
+		$url = $this->getShopBaseUrl() . "products/{$args['product_id']}/images/count.json";
 
 		if( array_key_exists( 'filters', $args ) ) {
 			$filterArray = array();

@@ -14,5 +14,6 @@ class Fulfillment extends BaseObject {
 
 	protected $name = "fulfillments";
 	protected $key = "fulfillment";
+	protected $parent = "orders";
 
 }

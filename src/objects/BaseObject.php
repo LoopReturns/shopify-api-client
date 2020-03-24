@@ -21,6 +21,11 @@ class BaseObject extends BaseProvider {
 	protected $parent;
 	protected $hasParent = [];
 
+	public $next;
+	public $previous;
+	public $limit = 250;
+	public $page = 1;
+
 	private function checkParent ( $f, $args ) {
 		$prefix = "";
 		if( ( isset( $this->parent ) and in_array( $f, $this->hasParent ) )
@@ -30,14 +35,14 @@ class BaseObject extends BaseProvider {
 				if( !array_key_exists( 'parent_id', $args ) ) {
 					throw new ShopifyException( 'Invalid args: provide a parent_id' );
 				}
-				$prefix = "/{$this->parent}/{$args['parent_id']}/";
+				$prefix = "{$this->parent}/{$args['parent_id']}/";
 			}
 			else {
 				$jsonObj = json_decode( $args );
 				if( !property_exists( $jsonObj , 'parent_id' ) ) {
 					throw new ShopifyException( 'Invalid args: provide a parent_id' );
 				}
-				$prefix = "/{$this->parent}/{$jsonObj->parent_id}/";
+				$prefix = "{$this->parent}/{$jsonObj->parent_id}/";
 			}
 		}
 		return $prefix;
@@ -55,7 +60,7 @@ class BaseObject extends BaseProvider {
 			throw new ShopifyException( $e );
 		}
 
-		$url = $this->getShopBaseUrl() . "/admin/" . $prefix . "{$this->name}.json";
+		$url = $this->getShopBaseUrl() . $prefix . "{$this->name}.json";
 		$headers = $this->getRequestHeaders();
 
 		$json = json_decode( $json );
@@ -92,7 +97,7 @@ class BaseObject extends BaseProvider {
 		catch ( ShopifyException $e ) {
 			throw new ShopifyException( $e );
 		}
-		$url = $this->getShopBaseUrl() . "/admin/" . $prefix . "{$this->name}/{$jsonObj->id}.json";
+		$url = $this->getShopBaseUrl() . $prefix . "{$this->name}/{$jsonObj->id}.json";
 		$headers = $this->getRequestHeaders();
 
 		$result = $this->execute( $url , "PUT" , $headers , $data );
@@ -123,7 +128,7 @@ class BaseObject extends BaseProvider {
 		catch ( ShopifyException $e ) {
 			throw new ShopifyException( $e );
 		}
-		$url = $this->getShopBaseUrl() . "/admin/" . $prefix . "{$this->name}/{$args['id']}.json";
+		$url = $this->getShopBaseUrl() . $prefix . "{$this->name}/{$args['id']}.json";
 		$headers = $this->getRequestHeaders();
 
 		$result = $this->execute( $url, "DELETE" , $headers);
@@ -148,7 +153,7 @@ class BaseObject extends BaseProvider {
 		catch ( ShopifyException $e ) {
 			throw new ShopifyException( $e );
 		}
-		$url = $this->getShopBaseUrl() . "/admin/" . $prefix . "{$this->name}/{$args['id']}.json";
+		$url = $this->getShopBaseUrl() . $prefix . "{$this->name}/{$args['id']}.json";
 		$headers = $this->getRequestHeaders();
 
 		if( array_key_exists( 'fields', $args ) )
@@ -176,13 +181,40 @@ class BaseObject extends BaseProvider {
 		catch ( ShopifyException $e ) {
 			throw new ShopifyException( $e );
 		}
-		$url = $this->getShopBaseUrl() . "/admin/" . $prefix . "{$this->name}.json";
+		$url = $this->getShopBaseUrl() . $prefix . "{$this->name}.json";
 		$headers = $this->getRequestHeaders();
 
 		$argArray = array();
 		if( array_key_exists( 'filters', $args ) ) {
 			foreach( $args['filters'] as $k => $v ) {
-				$argArray[] = "{$k}={$v}";
+				if($k == 'limit') {
+					$this->limit = $v;
+				}
+			}
+			foreach( $args['filters'] as $k => $v ) {
+				if($k == 'page') {
+					$page = $v;
+					if($page == 1) {
+						$argArray[] = "since_id=0";
+						$this->page = $v;
+					}
+					elseif($page - $this->page == 1) {
+						// next
+						$argArray = ["page_info=" . $this->next];
+						$argArray[] = "limit=" . $this->limit;
+						$this->page = $v;
+						break;
+					}
+					elseif($page - $this->page == -1) {
+						// previous
+						$argArray = ["page_info=" . $this->previous];
+						$argArray[] = "limit=" . $this->limit;
+						$this->page = $v;
+						break;
+					}
+				} else {
+					$argArray[] = "{$k}={$v}";
+				}
 			}
 		}
 		if( array_key_exists( 'fields', $args ) ) {
@@ -215,7 +247,7 @@ class BaseObject extends BaseProvider {
 		catch ( ShopifyException $e ) {
 			throw new ShopifyException( $e );
 		}
-		$url = $this->getShopBaseUrl() . "/admin/" . $prefix . "{$this->name}/count.json";
+		$url = $this->getShopBaseUrl() . $prefix . "{$this->name}/count.json";
 		$headers = $this->getRequestHeaders();
 
 		if( array_key_exists( 'filters', $args ) ) {

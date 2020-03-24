@@ -18,7 +18,7 @@ class Customer extends BaseObject {
 	# Pass in Array
 	public function search( $args=array() ) {
 
-		$url = $this->getShopBaseUrl() . "/admin/{$this->name}/search.json";
+		$url = $this->getShopBaseUrl() . "{$this->name}/search.json";
 
 		if( array_key_exists( 'query', $args ) )
 			$url .= "?query=" . $args['query'];
