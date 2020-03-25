@@ -286,7 +286,7 @@ trait ShopifyTransport {
                         // wait for 1/2 seconds
                         usleep(500000);
                     }
-                    else if  ( $rate > 70 ) { // 30/40
+                    else { // 30/40
                         // wait for 1/3 seconds
                         usleep(333333);
                     }
