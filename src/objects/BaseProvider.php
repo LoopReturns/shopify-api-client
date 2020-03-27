@@ -80,6 +80,10 @@ class BaseProvider {
 		return $this->domain;
 	}
 
+	public function getNoVersionShopBaseUrl() {
+		return $this->shopBaseUrl . '/admin/';
+	}
+
 	public function getShopBaseUrl() {
 		return $this->shopBaseUrl . '/admin/api/' . $this->shopify_api_version . '/';
 	}
