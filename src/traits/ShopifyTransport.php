@@ -255,7 +255,7 @@ trait ShopifyTransport {
 	private function shouldLimit($headers, $method, $url) {
     	if ( isset($headers['X-Shopify-Shop-Api-Call-Limit'][0]) ) {
 
-            $logLocation = storage_path('/shopify-' . date("Y-m-d") . '.log');
+            $logLocation = storage_path('/logs/shopify-' . date("Y-m-d") . '.log');
 
             try {
                 error_log(date("Y-m-d H:i:s") . ' - ' . ($headers['X-Shopify-Shop-Api-Call-Limit'][0] ?? 'no limit header') . ' ' . strtoupper($method) . " " . $url . "\n", '3', $logLocation);
