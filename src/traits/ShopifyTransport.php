@@ -43,6 +43,18 @@ trait ShopifyTransport {
 				$url,
 				$attrs
 			);
+
+			// if status code is 202, sleep for specified time
+			if ($this->shopifyTransportResult->getStatusCode() == 202) {
+				$result_headers  = $this->shopifyTransportResult->getHeaders();
+				$sleep = (int)($result_headers["Retry-After"][0] ?? 2);
+				if ( ($sleep < 1) || ($sleep > 7) ) {
+					$sleep = 2; // keep a sane number here
+				}
+				sleep($sleep);
+				$logLocation = storage_path('/logs/shopify-' . date("Y-m-d") . '.log');
+				error_log(date("Y-m-d H:i:s") . ' SLEEPING ' . $sleep . ' second on ' . $this->name . ' ' . $method .  "\n", '3', $logLocation);
+			}
 		}
 		catch ( ClientException $e ) {
 			// Self rollback to avoid Shopify throttling
