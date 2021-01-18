@@ -16,25 +16,26 @@ class Customer extends BaseObject {
 	protected $key = "customer";
 
 	# Pass in Array
-	public function search( $args=array() ) {
-
+	public function search($args=array())
+    {
 		$url = $this->getShopBaseUrl() . "{$this->name}/search.json";
 
-		if( array_key_exists( 'query', $args ) )
-			$url .= "?query=" . $args['query'];
+		if (array_key_exists('query', $args)) {
+            $url .= "?query=" . $args['query'];
+        }
 
-		// print "\n$url\n";
+        $headers = $this->getRequestHeaders();
 
-		$result = $this->execute( $url, "GET" );
-		$result = json_decode( $result );
+		$result = $this->execute($url, "GET", $headers);
+		$result = json_decode($result);
 
-		if( $result and property_exists( $result, 'customers') ) {
-			if( count( $result->customers ) == 0 )
-				return "";
-			return json_encode( $result->{'customers'} );
+		if ($result and property_exists($result, 'customers')) {
+			if (count($result->customers) == 0) {
+                return "";
+            }
+			return json_encode($result->{'customers'});
 		}
 
 		return $result;
 	}
-
 }
