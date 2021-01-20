@@ -8,33 +8,35 @@
 
 namespace Xariable\Shopify\Objects;
 
-class Customer extends BaseObject {
+class Customer extends BaseObject
+{
 
-	use \Xariable\Shopify\Traits\ShopifyTransport;
+    use \Xariable\Shopify\Traits\ShopifyTransport;
 
-	protected $name = "customers";
-	protected $key = "customer";
+    protected $name = "customers";
+    protected $key = "customer";
 
-	# Pass in Array
-	public function search( $args=array() ) {
+    # Pass in Array
+    public function search($args = array())
+    {
+        $url = $this->getShopBaseUrl() . "{$this->name}/search.json";
 
-		$url = $this->getShopBaseUrl() . "{$this->name}/search.json";
+        if (array_key_exists('query', $args)) {
+            $url .= "?query=" . $args['query'];
+        }
 
-		if( array_key_exists( 'query', $args ) )
-			$url .= "?query=" . $args['query'];
+        $headers = $this->getRequestHeaders();
 
-		// print "\n$url\n";
+        $result = $this->execute($url, "GET", $headers);
+        $result = json_decode($result);
 
-		$result = $this->execute( $url, "GET" );
-		$result = json_decode( $result );
+        if ($result and property_exists($result, 'customers')) {
+            if (count($result->customers) == 0) {
+                return "";
+            }
+            return json_encode($result->{'customers'});
+        }
 
-		if( $result and property_exists( $result, 'customers') ) {
-			if( count( $result->customers ) == 0 )
-				return "";
-			return json_encode( $result->{'customers'} );
-		}
-
-		return $result;
-	}
-
+        return $result;
+    }
 }
