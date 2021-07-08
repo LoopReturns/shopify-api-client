@@ -15,7 +15,7 @@ class BaseProvider {
 	private $accessToken, $shopDomain;
 	private $headers;
 
-	private $shopify_api_version = '2020-07';
+	private $shopify_api_version = '2020-10';
 
 	public function __construct($args) {
 
